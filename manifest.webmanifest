@@ -1,0 +1,15 @@
+{
+  "name": "E104A - Thi trắc nghiệm",
+  "short_name": "E104A",
+  "description": "Ứng dụng ôn tập và thi trắc nghiệm lớp E104A",
+  "lang": "vi",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#10291e",
+  "theme_color": "#173d2b",
+  "icons": [
+    {"src": "./icons/e104a-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ]
+}
