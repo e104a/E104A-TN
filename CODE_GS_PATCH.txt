@@ -1,0 +1,17 @@
+CHỈNH SỬA NHỎ TRONG Code.gs ĐỂ CHO PHÉP HIỂN THỊ TRONG VỎ PWA
+
+Trong hàm doGet() hiện tại, thêm dòng:
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+
+Ví dụ:
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index')
+    .evaluate()
+    .setTitle('E104A - Thi trắc nghiệm')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+Không chạy setupDatabase() và không thay ID Google Sheets.
+Sau khi sửa: Deploy > Manage deployments > Edit > New version > Deploy.
+Chỉ cho phép nhúng từ hosting do anh kiểm soát.
