@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173d2b">
+  <meta name="description" content="E104A - Thi trắc nghiệm">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="E104A">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/e104a-icon.svg">
+  <link rel="icon" href="./icons/e104a-icon.svg">
+  <title>E104A - Thi trắc nghiệm</title>
+  <style>
+    *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;background:#10291e}
+    .app{height:100%;height:100dvh;display:flex;flex-direction:column}
+    .bar{height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#f9e7a2;background:#173d2b;border-bottom:1px solid #c9a84d;font-weight:700;letter-spacing:.2px}
+    .bar small{font-weight:400;color:#fff;font-size:11px}
+    iframe{border:0;display:block;width:100%;height:calc(100% - 48px);background:#fff;flex:1}
+    .offline{display:none;color:white;text-align:center;padding:18px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="bar"><span>E104A - THI TRẮC NGHIỆM</span><small id="state">Đang kết nối…</small></div>
+    <iframe id="exam" title="E104A - Thi trắc nghiệm" src="https://script.google.com/macros/s/AKfycbw21mPD_1pE1oS5DOeviHVm3SPopT29JRTle8v6o5dxsyyFGBhEoSTBVCOIMQrlTgwYWg/exec" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="offline" id="offline">Ứng dụng cần kết nối Internet để làm bài và đồng bộ dữ liệu.</div>
+  </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+    }
+    const frame=document.getElementById('exam');
+    frame.addEventListener('load',()=>document.getElementById('state').textContent='Đã mở hệ thống');
+    window.addEventListener('offline',()=>{document.getElementById('state').textContent='Mất kết nối';document.getElementById('offline').style.display='block';});
+    window.addEventListener('online',()=>{document.getElementById('state').textContent='Đã kết nối';document.getElementById('offline').style.display='none';});
+  </script>
+</body>
+</html>
