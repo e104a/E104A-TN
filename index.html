@@ -13,73 +13,28 @@
   <link rel="icon" href="./icons/e104a-icon.svg">
   <title>E104A - Thi trắc nghiệm</title>
   <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#10291e;color:#fff}
-    body{min-height:100dvh}
-    .app{min-height:100dvh;display:flex;flex-direction:column}
-    .bar{min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;color:#f9e7a2;background:#173d2b;border-bottom:1px solid #c9a84d;font-weight:700;letter-spacing:.2px}
-    .bar small{font-weight:400;color:#fff;font-size:12px}
-    main{width:min(100%,760px);margin:auto;padding:28px 18px 24px;flex:1;display:flex;align-items:center}
-    .panel{width:100%;background:#f7f8f5;color:#183326;border-radius:22px;padding:clamp(22px,5vw,42px);box-shadow:0 18px 48px rgba(0,0,0,.25);text-align:center}
-    .crest{width:82px;height:82px;margin:0 auto 18px;border:2px solid #c9a84d;border-radius:50%;display:grid;place-items:center;background:#173d2b;color:#f9e7a2;font-size:25px;font-weight:800;letter-spacing:1px}
-    h1{margin:0;color:#173d2b;font-size:clamp(24px,5vw,34px);line-height:1.25}
-    .subtitle{margin:10px 0 0;color:#506458;font-size:15px;line-height:1.5}
-    .status{margin:22px auto 0;display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#e7eee8;color:#345640;font-size:13px}
-    .dot{width:9px;height:9px;border-radius:50%;background:#16a34a}
-    .dot.off{background:#dc2626}
-    .actions{display:grid;gap:12px;margin-top:26px}
-    button{width:100%;border:0;border-radius:12px;padding:16px 18px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .12s,opacity .12s}
-    button:active{transform:scale(.985)}
-    .primary{background:#173d2b;color:#fff;box-shadow:0 5px 14px rgba(23,61,43,.2)}
-    .secondary{background:#e7eee8;color:#173d2b}
-    .note{margin:18px 0 0;color:#68786c;font-size:13px;line-height:1.55}
-    footer{text-align:center;color:#c6d3c9;padding:12px 16px 18px;font-size:12px}
-    @media(min-width:600px){.actions{grid-template-columns:1fr 1fr}.actions button{min-height:58px}}
+    *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;background:#10291e}
+    .app{height:100%;height:100dvh;display:flex;flex-direction:column}
+    .bar{height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#f9e7a2;background:#173d2b;border-bottom:1px solid #c9a84d;font-weight:700;letter-spacing:.2px}
+    .bar small{font-weight:400;color:#fff;font-size:11px}
+    iframe{border:0;display:block;width:100%;height:calc(100% - 48px);background:#fff;flex:1}
+    .offline{display:none;color:white;text-align:center;padding:18px}
   </style>
 </head>
 <body>
   <div class="app">
-    <header class="bar"><span>E104A - THI TRẮC NGHIỆM</span><small id="state">Đang kiểm tra kết nối…</small></header>
-    <main>
-      <section class="panel" aria-label="Mở hệ thống thi E104A">
-        <div class="crest" aria-hidden="true">104A</div>
-        <h1>HỆ THỐNG THI TRẮC NGHIỆM</h1>
-        <p class="subtitle">Luyện tập và kiểm tra kiến thức</p>
-        <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Đang kiểm tra Internet</span></div>
-        <div class="actions">
-          <button class="primary" id="openExam">VÀO HỆ THỐNG THI</button>
-          <button class="secondary" id="openSameTab">MỞ TRỰC TIẾP TẠI ĐÂY</button>
-        </div>
-        <p class="note">Hệ thống thi được mở trực tiếp, không nhúng trong khung iframe. Cần kết nối Internet để tải bài thi và đồng bộ dữ liệu.</p>
-      </section>
-    </main>
-    <footer>E104A · Thi trắc nghiệm</footer>
+    <div class="bar"><span>E104A - THI TRẮC NGHIỆM</span><small id="state">Đang kết nối…</small></div>
+    <iframe id="exam" title="E104A - Thi trắc nghiệm" src="https://script.google.com/macros/s/AKfycbw21mPD_1pE1oS5DOeviHVm3SPopT29JRTle8v6o5dxsyyFGBhEoSTBVCOIMQrlTgwYWg/exec" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="offline" id="offline">Ứng dụng cần kết nối Internet để làm bài và đồng bộ dữ liệu.</div>
   </div>
   <script>
-    const EXAM_URL = 'https://script.google.com/macros/s/AKfycbw21mPD_1pE1oS5DOeviHVm3SPopT29JRTle8v6o5dxsyyFGBhEoSTBVCOIMQrlTgwYWg/exec';
-    const state = document.getElementById('state');
-    const statusText = document.getElementById('statusText');
-    const statusDot = document.getElementById('statusDot');
-    function updateNetwork(){
-      const online = navigator.onLine;
-      state.textContent = online ? 'Đã kết nối Internet' : 'Mất kết nối';
-      statusText.textContent = online ? 'Có kết nối Internet' : 'Không có kết nối Internet';
-      statusDot.classList.toggle('off', !online);
-    }
-    document.getElementById('openExam').addEventListener('click', () => {
-      if (!navigator.onLine) { updateNetwork(); alert('Thiết bị đang mất kết nối Internet. Vui lòng kết nối mạng rồi thử lại.'); return; }
-      window.open(EXAM_URL, '_blank', 'noopener');
-    });
-    document.getElementById('openSameTab').addEventListener('click', () => {
-      if (!navigator.onLine) { updateNetwork(); alert('Thiết bị đang mất kết nối Internet. Vui lòng kết nối mạng rồi thử lại.'); return; }
-      window.location.href = EXAM_URL;
-    });
-    window.addEventListener('online', updateNetwork);
-    window.addEventListener('offline', updateNetwork);
-    updateNetwork();
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
+      window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
     }
+    const frame=document.getElementById('exam');
+    frame.addEventListener('load',()=>document.getElementById('state').textContent='Đã mở hệ thống');
+    window.addEventListener('offline',()=>{document.getElementById('state').textContent='Mất kết nối';document.getElementById('offline').style.display='block';});
+    window.addEventListener('online',()=>{document.getElementById('state').textContent='Đã kết nối';document.getElementById('offline').style.display='none';});
   </script>
 </body>
 </html>
