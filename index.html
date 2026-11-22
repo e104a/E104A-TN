@@ -1,40 +1,426 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#173d2b">
-  <meta name="description" content="E104A - Thi trắc nghiệm">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="E104A">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icons/e104a-icon.svg">
-  <link rel="icon" href="./icons/e104a-icon.svg">
-  <title>E104A - Thi trắc nghiệm</title>
-  <style>
-    *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;background:#10291e}
-    .app{height:100%;height:100dvh;display:flex;flex-direction:column}
-    .bar{height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#f9e7a2;background:#173d2b;border-bottom:1px solid #c9a84d;font-weight:700;letter-spacing:.2px}
-    .bar small{font-weight:400;color:#fff;font-size:11px}
-    iframe{border:0;display:block;width:100%;height:calc(100% - 48px);background:#fff;flex:1}
-    .offline{display:none;color:white;text-align:center;padding:18px}
-  </style>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <?!= include('Styles'); ?>
 </head>
 <body>
-  <div class="app">
-    <div class="bar"><span>E104A - THI TRẮC NGHIỆM</span><small id="state">Đang kết nối…</small></div>
-    <iframe id="exam" title="E104A - Thi trắc nghiệm" src="https://script.google.com/macros/s/AKfycbxxmWkQ42e_Vh81oXQvntR3s4pBGTzJcxxHMelzKaBtX43-04nTUjNDTA8h9jpwLnUV9Q/exec" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    <div class="offline" id="offline">Ứng dụng cần kết nối Internet để làm bài và đồng bộ dữ liệu.</div>
+
+<header class="header military-header">
+  <div class="military-banner">
+    <div class="banner-emblem" aria-label="Quốc huy Việt Nam">
+      <svg class="national-emblem" viewBox="0 0 160 170" role="img" aria-label="Hình quốc huy Việt Nam cách điệu">
+        <defs>
+          <radialGradient id="shieldRed" cx="38%" cy="28%"><stop offset="0" stop-color="#f22a24"/><stop offset="1" stop-color="#a90008"/></radialGradient>
+          <linearGradient id="emblemGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff4a8"/><stop offset=".48" stop-color="#f4c43e"/><stop offset="1" stop-color="#a96b0b"/></linearGradient>
+        </defs>
+        <!-- Hai nhánh lúa ôm tròn -->
+        <g fill="none" stroke="url(#emblemGold)" stroke-width="4" stroke-linecap="round">
+          <path d="M47 139C15 121 8 83 21 45 28 25 40 14 52 8"/><path d="M113 139c32-18 39-56 26-94-7-20-19-31-31-37"/>
+          <path d="M24 45l-14-7m14 20L8 55m15 22L7 75m20 20L13 103m24 18-14 13m103-89 14-7m-14 20 16-5m-15 22 16-2m-20 20 14 8m-24 12 13 13"/>
+        </g>
+        <g fill="url(#emblemGold)" stroke="#8c5b0c" stroke-width=".7">
+          <ellipse cx="14" cy="37" rx="4" ry="9" transform="rotate(-55 14 37)"/><ellipse cx="10" cy="57" rx="4" ry="9" transform="rotate(-78 10 57)"/><ellipse cx="11" cy="78" rx="4" ry="9" transform="rotate(-98 11 78)"/><ellipse cx="18" cy="99" rx="4" ry="9" transform="rotate(-125 18 99)"/><ellipse cx="29" cy="119" rx="4" ry="9" transform="rotate(-145 29 119)"/>
+          <ellipse cx="146" cy="37" rx="4" ry="9" transform="rotate(55 146 37)"/><ellipse cx="150" cy="57" rx="4" ry="9" transform="rotate(78 150 57)"/><ellipse cx="149" cy="78" rx="4" ry="9" transform="rotate(98 149 78)"/><ellipse cx="142" cy="99" rx="4" ry="9" transform="rotate(125 142 99)"/><ellipse cx="131" cy="119" rx="4" ry="9" transform="rotate(145 131 119)"/>
+        </g>
+        <!-- Quốc huy dạng khiên tròn đỏ, sao vàng -->
+        <circle cx="80" cy="63" r="48" fill="url(#emblemGold)" stroke="#80520b" stroke-width="2"/>
+        <circle cx="80" cy="63" r="42" fill="url(#shieldRed)" stroke="#ffe78a" stroke-width="2.5"/>
+        <path d="M80 27l9 23h24L94 65l7 24-21-14-21 14 7-24-19-15h24z" fill="#ffdf32" stroke="#fff1a0" stroke-width="1.5"/>
+        <!-- Bánh xe răng cưa và nửa bánh răng ở chân khiên -->
+        <path d="M55 109l5-7 7 3 5-5-1-8h18l-1 8 5 5 7-3 5 7-6 6 1 8-8 5-7-5h-9l-7 5-8-5 1-8z" fill="url(#emblemGold)" stroke="#85560d" stroke-width="2"/>
+        <circle cx="80" cy="116" r="10" fill="#b30b12" stroke="#ffe18a" stroke-width="2"/><circle cx="80" cy="116" r="4" fill="url(#emblemGold)"/>
+        <!-- Dải băng đỏ phía dưới -->
+        <path d="M22 139l22 2 36 8 36-8 22-2-9 18-49 9-49-9z" fill="#b50912" stroke="url(#emblemGold)" stroke-width="2.5"/>
+        <path d="M40 145q40 14 80 0" fill="none" stroke="#ffe68a" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="banner-copy">
+      <h1>HỆ THỐNG ÔN TẬP VÀ THI TRẮC NGHIỆM</h1>
+      <p class="class-ribbon">LỚP E104A - HỆ 2 - HỌC VIỆN HẬU CẦN</p>
+    </div>
+    <div class="banner-star" aria-hidden="true">★</div>
   </div>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
-    }
-    const frame=document.getElementById('exam');
-    frame.addEventListener('load',()=>document.getElementById('state').textContent='Đã mở hệ thống');
-    window.addEventListener('offline',()=>{document.getElementById('state').textContent='Mất kết nối';document.getElementById('offline').style.display='block';});
-    window.addEventListener('online',()=>{document.getElementById('state').textContent='Đã kết nối';document.getElementById('offline').style.display='none';});
-  </script>
+</header>
+
+<!-- NÚT VỀ TRANG CHỦ LUÔN HIỂN THỊ Ở MỌI MÀN HÌNH -->
+<button type="button" id="globalHomeButton" class="global-home-button" onclick="backHome()" title="Quay về trang chủ">⌂ <span>TRANG CHỦ</span></button>
+
+<main class="container military-container">
+
+  <!-- TRANG CHỦ: MỖI MÔN HỌC LÀ MỘT THẺ RIÊNG -->
+  <section id="home" class="panel military-home">
+    <nav class="military-nav" aria-label="Điều hướng chính">
+      <button type="button" class="nav-active" onclick="backHome()"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/></svg></span><span>Trang chủ</span></button>
+      <button type="button" onclick="showAdmin()"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 7 9-4 9 4-9 4zM3 12l9 4 9-4M3 17l9 4 9-4"/></svg></span><span>Ngân hàng câu hỏi</span></button>
+      <button type="button" onclick="showAdmin()"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 20V12h4v8zM10 20V7h4v13zM16 20V3h4v17z"/></svg></span><span>Thống kê</span></button>
+      <button type="button" class="nav-admin" onclick="showAdmin()"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 2.9-.2-.1a1.7 1.7 0 0 0-1.8.1l-.2.1h-3.4l-.1-.2a1.7 1.7 0 0 0-1.6-1l-.2.1-2.9-1.7.1-.2a1.7 1.7 0 0 0-.1-1.8l-.1-.2v-3.4l.2-.1a1.7 1.7 0 0 0 1-1.6l-.1-.2 1.7-2.9.2.1a1.7 1.7 0 0 0 1.8-.1l.2-.1h3.4l.1.2a1.7 1.7 0 0 0 1.6 1l.2-.1 2.9 1.7-.1.2a1.7 1.7 0 0 0 .1 1.8l.1.2v3.4z"/></svg></span><span>Quản trị hệ thống</span></button>
+      <button type="button" class="nav-user" onclick="showAdmin()"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7z"/></svg></span><span>Admin</span>⌄</button>
+    </nav>
+
+    <div class="home-layout">
+      <section class="subjects-panel">
+        <div class="section-heading"><span class="heading-icon"><svg viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5zM6 11v5c4 3 8 3 12 0v-5M22 9v7"/></svg></span> CHỌN MÔN HỌC ĐỂ ÔN TẬP VÀ THI</div>
+        <div id="subjectCards" class="subject-cards">
+          <div class="subject-loading">Đang tải danh sách môn học...</div>
+        </div>
+        <div id="homeMessage" class="message"></div>
+        <div class="history">
+          <button class="secondary-button" onclick="showHistory()">Xem lịch sử thi của tôi</button>
+        </div>
+        <div id="historyBox"></div>
+      </section>
+
+      <aside class="home-aside">
+        <section class="aside-panel">
+          <div class="section-heading"><span class="heading-icon"><svg viewBox="0 0 24 24"><path d="M3 20V12h4v8zM10 20V7h4v13zM17 20V3h4v17z"/></svg></span> THỐNG KÊ TỔNG QUAN</div>
+          <div class="aside-stat"><span class="stat-label"><span class="stat-icon"><svg viewBox="0 0 24 24"><path d="m3 6 9-3 9 3-9 3zM3 11l9 3 9-3M3 16l9 3 9-3"/></svg></span><span>Tổng số câu hỏi</span></span><strong id="homeQuestionCount">0</strong></div>
+          <div class="aside-stat"><span class="stat-label"><span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2H21v18H6.5A3.5 3.5 0 0 0 3 23zM3 5.5v17"/></svg></span><span>Số môn học</span></span><strong id="homeSubjectCount">0</strong></div>
+          <div class="aside-stat"><span class="stat-label"><span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M7 3h10l3 3v15H4V3zM8 10h8M8 14h8M8 18h5"/></svg></span><span>Số câu mỗi lượt thi</span></span><strong>30</strong></div>
+        </section>
+        <section class="aside-panel notices">
+          <div class="section-heading"><span class="heading-icon"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></span> THÔNG BÁO</div>
+          <p class="notice-item"><span class="notice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 12h6l9-7v22l-9-7H4z"/><path d="M23 11c2 2 2 8 0 10M26 7c4 4 4 14 0 18"/></svg></span><span>Mỗi môn học có khu vực luyện tập và thi kiểm tra riêng.</span></p>
+          <p class="notice-item"><span class="notice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 12h6l9-7v22l-9-7H4z"/><path d="M23 11c2 2 2 8 0 10M26 7c4 4 4 14 0 18"/></svg></span><span>Luyện tập: làm toàn bộ câu hỏi và xem giải thích.</span></p>
+          <p class="notice-item"><span class="notice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 12h6l9-7v22l-9-7H4z"/><path d="M23 11c2 2 2 8 0 10M26 7c4 4 4 14 0 18"/></svg></span><span>Thi kiểm tra: chọn ngẫu nhiên 30 câu.</span></p>
+          <p class="notice-item"><span class="notice-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 12h6l9-7v22l-9-7H4z"/><path d="M23 11c2 2 2 8 0 10M26 7c4 4 4 14 0 18"/></svg></span><span>Thời gian làm bài: 30 phút.</span></p>
+        </section>
+      </aside>
+    </div>
+    <div class="home-footer">LỚP E104A - HỆ 2 - HỌC VIỆN HẬU CẦN</div>
+
+    <!-- Các trường ẩn giữ tương thích với một số hàm giao diện cũ -->
+    <select id="subject" class="hidden"></select>
+    <div id="practiceCard" class="hidden"></div>
+    <div id="examCard" class="hidden"></div>
+    <div id="examOptions" class="hidden"><input id="examCount" type="hidden" value="30"></div>
+    <select id="examSelect" class="hidden"></select>
+    <div class="admin-entry">
+      <div><strong>QUẢN TRỊ HỆ THỐNG</strong><p>Chỉ dành cho người được cấp quyền quản trị</p></div>
+      <button class="admin-button" onclick="showAdmin()">🔐 ĐĂNG NHẬP ADMIN</button>
+    </div>
+  </section>
+
+  <!-- MÀN HÌNH LÀM BÀI -->
+  <section id="quiz" class="panel hidden">
+    <div class="quiz-top">
+      <div>
+        <h2 id="quizSubject"></h2>
+        <p id="quizInfo"></p>
+      </div>
+      <div id="timerBox" class="timer hidden">
+        ⏱ <span id="timer">30:00</span>
+      </div>
+    </div>
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+
+    <div class="question-layout">
+      <div class="question-main">
+        <div class="question-number">
+          CÂU HỎI <span id="currentNumber">1</span>
+          / <span id="totalNumber">0</span>
+        </div>
+
+        <div id="questionText" class="question-text"></div>
+
+        <div id="options" class="options"></div>
+
+        <div id="explanation" class="explanation hidden"></div>
+
+        <div class="question-actions">
+          <button class="secondary-button" onclick="previousQuestion()">
+            ← Câu trước
+          </button>
+
+          <button class="mark-button" id="markButton"
+                  onclick="toggleMark()">
+            ☆ Đánh dấu
+          </button>
+
+          <button class="secondary-button" onclick="nextQuestion()">
+            Câu tiếp →
+          </button>
+        </div>
+      </div>
+
+      <aside class="question-sidebar">
+        <h3>DANH SÁCH CÂU HỎI</h3>
+        <div id="questionNav" class="question-nav"></div>
+
+        <div class="legend">
+          <span>🟢 Đã chọn</span>
+          <span>⚪ Chưa làm</span>
+          <span>⭐ Đánh dấu</span>
+        </div>
+      </aside>
+    </div>
+
+    <div class="submit-area">
+      <div id="answeredInfo">Đã trả lời: 0/0 câu</div>
+      <button class="submit-button" onclick="submitCurrentQuiz()">
+        NỘP BÀI
+      </button>
+    </div>
+  </section>
+
+  <!-- KẾT QUẢ -->
+  <section id="result" class="panel hidden">
+    <div class="result-header">
+      <div class="result-icon">🏆</div>
+      <h2>KẾT QUẢ BÀI LÀM</h2>
+      <p id="resultName"></p>
+      <div id="resultScore" class="score">0.00</div>
+      <div id="resultStatus"></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <strong id="resultTotal">0</strong>
+        <span>Tổng số câu</span>
+      </div>
+      <div class="stat-card correct">
+        <strong id="resultCorrect">0</strong>
+        <span>Câu đúng</span>
+      </div>
+      <div class="stat-card wrong">
+        <strong id="resultWrong">0</strong>
+        <span>Câu sai</span>
+      </div>
+      <div class="stat-card">
+        <strong id="resultUnanswered">0</strong>
+        <span>Chưa trả lời</span>
+      </div>
+    </div>
+
+    <h3>CHI TIẾT BÀI LÀM</h3>
+    <div id="resultDetails"></div>
+
+    <button class="primary-button" onclick="backHome()">
+      QUAY LẠI TRANG CHỦ
+    </button>
+  </section>
+
+  <!-- QUẢN TRỊ -->
+  <section id="admin" class="panel hidden">
+    <div class="admin-heading">
+      <h2>TRANG QUẢN TRỊ HỆ THỐNG</h2>
+      <button class="secondary-button" onclick="logoutAdmin()">
+        ĐĂNG XUẤT
+      </button>
+    </div>
+
+    <div id="adminLogin">
+      <div class="form-group">
+        <label>Mật khẩu quản trị</label>
+        <input type="password" id="adminPin"
+               placeholder="Nhập mật khẩu">
+      </div>
+      <button class="primary-button" onclick="loginAdmin()">
+        ĐĂNG NHẬP
+      </button>
+      <div id="adminMessage" class="message"></div>
+    </div>
+
+    <div id="adminDashboard" class="hidden">
+
+      <div class="admin-tabs">
+        <button onclick="adminTab('subjectTab')">Môn học</button>
+        <button onclick="adminTab('addTab')">Thêm câu hỏi</button>
+        <button onclick="adminTab('importTab')">Nhập Word / Excel</button>
+        <button onclick="adminTab('questionTab')">Ngân hàng</button>
+        <button onclick="adminTab('examTab')">Tạo đề thi</button>
+        <button onclick="adminTab('settingTab')">Cấu hình</button>
+        <button onclick="adminTab('resultTab')">Kết quả thi</button>
+      </div>
+
+      <!-- QUẢN LÝ MÔN HỌC -->
+      <div id="subjectTab" class="admin-tab">
+        <h3>QUẢN LÝ MÔN HỌC</h3>
+        <p class="subject-admin-note">Tại đây Admin có thể thêm môn học mới, chỉnh sửa tên, khóa/mở môn học hoặc xóa môn học. Môn đã có câu hỏi hoặc đề thi sẽ được khóa thay vì xóa để bảo toàn dữ liệu.</p>
+        <div class="subject-add-box">
+        <div class="form-group">
+          <label>Tên môn học mới</label>
+          <input id="newSubjectName" placeholder="Nhập tên môn học">
+        </div>
+        <button class="primary-button" onclick="saveSubject()">＋ THÊM MÔN HỌC</button>
+        </div>
+        <div id="subjectMessage" class="message"></div>
+        <div class="subject-list-heading"><h3 class="subject-list-title">DANH SÁCH MÔN HỌC HIỆN CÓ</h3><button type="button" class="secondary-button" onclick="loadAdminData()">↻ Làm mới danh sách</button></div>
+        <div id="subjectListStatus" class="subject-list-status">Đang tải danh sách môn học...</div>
+        <div id="subjectList"></div>
+      </div>
+
+      <!-- TẠO ĐỀ THI -->
+      <div id="examTab" class="admin-tab hidden">
+        <h3>TẠO VÀ QUẢN LÝ ĐỀ THI</h3>
+        <div class="form-group"><label>Tên đề thi</label><input id="examTitle" placeholder="Ví dụ: Đề kiểm tra cuối khóa"></div>
+        <div class="form-group"><label>Môn học</label><select id="examSubject"></select></div>
+        <div class="form-group"><label>Số câu hỏi</label><input id="examQuestionCount" type="number" min="1" value="30"></div>
+        <div class="form-group"><label>Thời gian làm bài (phút)</label><input id="examMinutes" type="number" min="1" value="30"></div>
+        <div class="form-group"><label>Điểm đạt</label><input id="examPassScore" type="number" min="0" max="10" step="0.25" value="5"></div>
+        <div class="form-group"><label>Trạng thái khi tạo</label><select id="examStatus"><option value="DRAFT">Lưu bản nháp</option><option value="PUBLISHED">Công khai ngay</option></select></div>
+        <button class="primary-button" onclick="saveExam()">TẠO ĐỀ THI</button>
+        <div id="examMessage" class="message"></div>
+        <h3>Danh sách đề thi</h3><div id="examList"></div>
+      </div>
+
+      <!-- THÊM CÂU HỎI -->
+      <div id="addTab" class="admin-tab hidden">
+        <h3>THÊM CÂU HỎI MỚI</h3>
+
+        <div class="form-group">
+          <label>Môn học</label>
+          <select id="qSubject"></select>
+        </div>
+
+        <div class="form-group">
+          <label>Chương / Chủ đề</label>
+          <input id="qChapter" placeholder="Nhập chương hoặc chủ đề">
+        </div>
+
+        <div class="form-group">
+          <label>Nội dung câu hỏi</label>
+          <textarea id="qQuestion" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Số lượng phương án</label>
+          <input id="qOptionCount" type="number" min="2" max="26" value="4" oninput="renderManualOptionInputs()" onchange="renderManualOptionInputs()">
+          <small>Nhập từ 2 đến 26 phương án. Khi thay đổi số lượng, các ô A, B, C... và danh sách đáp án đúng sẽ tự cập nhật. Nội dung các phương án đã nhập được giữ lại nếu vẫn còn trong phạm vi.</small>
+        </div>
+        <div id="qOptionInputs"></div>
+
+        <div class="form-group">
+          <label>Đáp án đúng</label>
+          <select id="qCorrect">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Giải thích đáp án</label>
+          <textarea id="qExplanation" rows="3"></textarea>
+        </div>
+
+        <button class="primary-button" onclick="saveQuestion()">
+          LƯU CÂU HỎI
+        </button>
+        <div id="addMessage" class="message"></div>
+      </div>
+
+      <!-- NHẬP WORD VÀ EXCEL -->
+      <div id="importTab" class="admin-tab hidden">
+        <h3>NHẬP CÂU HỎI TỪ WORD</h3>
+        <p>Tải tệp Word hoặc tài liệu tương thích. Hệ thống đọc dòng “Đáp án đúng: X” trước; nếu không có sẽ đối chiếu định dạng in đậm, nghiêng, màu chữ và tô nền. Mỗi câu có thể có từ 2 phương án trở lên (A–Z). Câu chưa chắc chắn sẽ yêu cầu Admin kiểm tra.</p>
+        <div class="form-group"><label>Môn học nhập câu hỏi</label><select id="wordSubject"></select></div>
+        <div class="form-group"><label>Chọn tệp tài liệu Word</label><input id="wordFile" type="file" accept="*/*"><small>Cho phép chọn .doc, .docx, .docm, .rtf, .odt và các tệp khác. Hệ thống sẽ thử chuyển đổi; định dạng không tương thích sẽ báo lỗi.</small></div>
+        <button class="primary-button" onclick="previewWordFile()">ĐỌC FILE VÀ XEM TRƯỚC</button>
+        <div id="wordMessage" class="message"></div>
+        <div id="wordPreview"></div>
+        <hr>
+        <h3>NHẬP CÂU HỎI TỪ EXCEL</h3>
+
+        <p>Thứ tự cột trong Excel:</p>
+        <ol>
+          <li>Môn học</li>
+          <li>Chương</li>
+          <li>Câu hỏi</li>
+          <li>Phương án A</li>
+          <li>Phương án B</li>
+          <li>Phương án C</li>
+          <li>Phương án D</li>
+          <li>Đáp án đúng</li>
+          <li>Giải thích</li>
+        </ol>
+
+        <p>Copy các dòng dữ liệu trong Excel rồi dán vào ô dưới đây.</p>
+
+        <div class="form-group">
+          <textarea id="importData" rows="10"
+            placeholder="Dán dữ liệu Excel vào đây..."></textarea>
+        </div>
+
+        <button class="primary-button" onclick="importExcel()">
+          NHẬP DỮ LIỆU
+        </button>
+        <div id="importMessage" class="message"></div>
+      </div>
+
+      <!-- NGÂN HÀNG -->
+      <div id="questionTab" class="admin-tab hidden">
+        <h3>NGÂN HÀNG CÂU HỎI</h3>
+        <p class="bank-intro">Tra cứu, lọc và quản lý toàn bộ câu hỏi đã lưu trong hệ thống.</p>
+        <div id="questionBankSummary" class="bank-summary"></div>
+        <div class="bank-toolbar">
+          <div class="form-group"><label>Tìm nội dung câu hỏi</label><input id="bankSearch" type="search" placeholder="Nhập từ khóa câu hỏi..." oninput="renderAdminQuestions()"></div>
+          <div class="form-group"><label>Lọc theo môn học</label><select id="bankSubjectFilter" onchange="renderAdminQuestions()"><option value="">Tất cả môn học</option></select></div>
+          <div class="form-group"><label>Trạng thái</label><select id="bankStatusFilter" onchange="renderAdminQuestions()"><option value="ALL">Tất cả</option><option value="ACTIVE">Đang sử dụng</option><option value="INACTIVE">Đã khóa</option></select></div>
+          <button type="button" class="secondary-button" onclick="loadAdminData()">↻ Làm mới dữ liệu</button>
+        </div>
+        <div id="questionBankStatus" class="bank-status">Đang tải ngân hàng câu hỏi...</div>
+        <div id="questionList"></div>
+      </div>
+
+      <!-- CẤU HÌNH -->
+      <div id="settingTab" class="admin-tab hidden">
+        <h3>CẤU HÌNH KỲ THI</h3>
+
+        <div class="form-group">
+          <label>Số câu thi mặc định</label>
+          <input type="number" id="settingCount">
+        </div>
+
+        <div class="form-group">
+          <label>Thời gian thi (phút)</label>
+          <input type="number" id="settingMinutes">
+        </div>
+
+        <div class="form-group">
+          <label>Điểm đạt</label>
+          <input type="number" id="settingPass"
+                 min="0" max="10" step="0.25">
+        </div>
+
+        <button class="primary-button" onclick="saveSettings()">
+          LƯU CẤU HÌNH
+        </button>
+
+        <hr>
+
+        <h3>ĐỔI MẬT KHẨU QUẢN TRỊ</h3>
+        <input type="password" id="newPin"
+               placeholder="Mật khẩu mới">
+        <button class="secondary-button" onclick="changePin()">
+          ĐỔI MẬT KHẨU
+        </button>
+        <div id="settingMessage" class="message"></div>
+      </div>
+
+      <!-- KẾT QUẢ -->
+      <div id="resultTab" class="admin-tab hidden">
+        <h3>THỐNG KÊ KẾT QUẢ THI</h3>
+        <div id="statistics"></div>
+        <div id="adminResults"></div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  LỚP E104A - HỆ 2 - HỌC VIỆN HẬU CẦN
+</footer>
+
+<?!= include('Script'); ?>
+
 </body>
 </html>
